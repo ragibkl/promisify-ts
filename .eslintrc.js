@@ -8,6 +8,7 @@ module.exports = {
     'airbnb-base',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -22,5 +23,15 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', {
       varsIgnorePattern: '^_',
     }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+   ]
   },
 };
