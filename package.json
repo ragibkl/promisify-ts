@@ -1,6 +1,6 @@
 {
   "name": "@ragibkl/promisify-ts",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Promisify utility function that preserves the original type annotation",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
