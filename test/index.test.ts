@@ -7,7 +7,7 @@ describe('promisify', () => {
         (a: string, b: string, cb: (err: any, data: string) => void) => {
           const sum = a + b;
           cb(null, sum);
-        }
+        },
       );
 
       const sampleAsync = promisify(sample);
@@ -24,7 +24,7 @@ describe('promisify', () => {
         (a: number, b: number, cb: (err: any, data: number) => void) => {
           const sum = a + b;
           cb(null, sum);
-        }
+        },
       );
 
       const sampleAsync = promisify(sample);
