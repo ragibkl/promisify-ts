@@ -3,12 +3,10 @@ import promisify from '../src';
 describe('promisify', () => {
   describe('when called with string string function', () => {
     it('returns callable promise function', async () => {
-      const sample = jest.fn(
-        (a: string, b: string, cb: (err: any, data: string) => void) => {
-          const sum = a + b;
-          cb(null, sum);
-        },
-      );
+      const sample = jest.fn((a: string, b: string, cb: (err: any, data: string) => void) => {
+        const sum = a + b;
+        cb(null, sum);
+      });
 
       const sampleAsync = promisify(sample);
 
@@ -20,12 +18,10 @@ describe('promisify', () => {
 
   describe('when called with number number function', () => {
     it('returns callable promise function', async () => {
-      const sample = jest.fn(
-        (a: number, b: number, cb: (err: any, data: number) => void) => {
-          const sum = a + b;
-          cb(null, sum);
-        },
-      );
+      const sample = jest.fn((a: number, b: number, cb: (err: any, data: number) => void) => {
+        const sum = a + b;
+        cb(null, sum);
+      });
 
       const sampleAsync = promisify(sample);
 
