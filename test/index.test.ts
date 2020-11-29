@@ -30,4 +30,37 @@ describe('promisify', () => {
       expect(sample.mock.calls[0][1]).toBe(2);
     });
   });
+
+  describe('when called with divide function', () => {
+    function divide(a: number, b: number, cb: (err: Error | null, data?: number) => void) {
+      setTimeout(() => {
+        try {
+          if (!b) {
+            throw new TypeError('Cannot divide by zero!');
+          }
+
+          cb(null, a / b);
+        } catch (err) {
+          cb(err);
+        }
+      }, 0);
+    }
+
+    const divideAsync = promisify(divide);
+
+    describe('when 10 / 2', () => {
+      it('returns 5', async () => {
+        const val = await divideAsync(10, 2);
+        expect(val).toEqual(5);
+      });
+    });
+
+    describe('when 10 / 0', () => {
+      it('rejects error', async () => {
+        await expect(divideAsync(10, 0)).rejects.toThrowError(
+          new TypeError('Cannot divide by zero!'),
+        );
+      });
+    });
+  });
 });
