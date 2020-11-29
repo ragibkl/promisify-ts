@@ -1,11 +1,11 @@
 type Fn = (...args: any[]) => void;
 type Cb = (err: any, data: any) => void;
 
-type Data<F extends Cb> = F extends (err: any, data: infer T) => void ? T : never;
-type Err<F extends Cb> = F extends (err: infer T, data: any) => void ? T : never;
-
 type Args<F extends Fn> = Parameters<F> extends [...args: infer I, cb?: Cb] ? I : never;
 type Callback<F extends Fn> = Parameters<F> extends [...args: infer _I, cb?: infer C] ? C : never;
+
+type Data<F extends Cb> = F extends (err: any, data: infer T) => void ? T : never;
+type Err<F extends Cb> = F extends (err: infer T, data: any) => void ? T : never;
 
 type Return<F extends Fn> = Callback<F> extends Cb ? Data<Callback<F>> : never;
 type Reject<F extends Fn> = Callback<F> extends Cb ? Err<Callback<F>> : never;
