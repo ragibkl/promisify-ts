@@ -1,24 +1,19 @@
-type Callback = (err: any, data: any) => void;
-type AnyFunc = (...args: any[]) => void;
+type Fn = (...args: any[]) => void;
+type Cb = (err: any, data: any) => void;
 
-type Data<F extends Callback> = F extends (err: any, data: infer T) => void ? T : never;
-type Err<F extends Callback> = F extends (err: infer T, data: any) => void ? T : never;
+type Data<F extends Cb> = F extends (err: any, data: infer T) => void ? T : never;
+type Err<F extends Cb> = F extends (err: infer T, data: any) => void ? T : never;
 
-type ArgsOf<F extends AnyFunc> = Parameters<F> extends [...args: infer I, cb?: Callback]
-  ? I
-  : never;
+type Args<F extends Fn> = Parameters<F> extends [...args: infer I, cb?: Cb] ? I : never;
+type Callback<F extends Fn> = Parameters<F> extends [...args: infer _I, cb?: infer C] ? C : never;
 
-type CallbackOf<F extends AnyFunc> = Parameters<F> extends [...args: infer _I, cb?: infer C]
-  ? C
-  : never;
+type Return<F extends Fn> = Callback<F> extends Cb ? Data<Callback<F>> : never;
+type Reject<F extends Fn> = Callback<F> extends Cb ? Err<Callback<F>> : never;
 
-type ReturnOf<F extends AnyFunc> = CallbackOf<F> extends Callback ? Data<CallbackOf<F>> : never;
-type ErrorOf<F extends AnyFunc> = CallbackOf<F> extends Callback ? Err<CallbackOf<F>> : never;
-
-export default function promisify<F extends AnyFunc>(fn: F) {
-  return function (...args: ArgsOf<F>): Promise<ReturnOf<F>> {
+export default function promisify<F extends Fn>(fn: F) {
+  return function (...args: Args<F>): Promise<Return<F>> {
     return new Promise((resolve, reject) => {
-      fn(...args, (err: ErrorOf<F>, data: ReturnOf<F>) => {
+      fn(...args, (err: Reject<F>, data: Return<F>) => {
         if (err) {
           return reject(err);
         }
